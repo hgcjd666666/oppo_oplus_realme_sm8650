@@ -38,7 +38,7 @@ on:
         description: '是否安装 LZ4KD 补丁(若已开启lz4+zstd补丁则可不开启)'
         required: true
         type: boolean
-        default: 'false'
+        default: 'true'
       bbr_enable:
         description: '是否启用bbr算法(优化上行数据,对手机日用无太大意义甚至可能负优化;false关闭,true仅加入算法,default设为默认)'
         required: true
@@ -52,7 +52,7 @@ on:
         description: '是否开启网络功能拓展配置(用于为ipset及需要iptables等高级网络功能内核支持的程序提供支持,天玑机型可能导致bug,建议关闭)'
         required: true
         type: boolean
-        default: 'true'
+        default: 'false'
       ssg_enable:
         description: '是否启用三星SSG IO调度器支持(提升IO读写性能; 在一加12上可能导致bug)'
         required: true
