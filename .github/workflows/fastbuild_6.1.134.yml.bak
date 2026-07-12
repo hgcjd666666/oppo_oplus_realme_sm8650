@@ -386,7 +386,7 @@ jobs:
           cd kernel_workspace
           wget -q https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/config.txt -O config_extra.txt
           cat config_extra.txt >> ./common/arch/arm64/configs/gki_defconfig
-
+          cat ../config.txt >> ./common/arch/arm64/configs/gki_defconfig
       - name: 启用网络功能增强优化配置
         if: inputs.better_net
         run: |
