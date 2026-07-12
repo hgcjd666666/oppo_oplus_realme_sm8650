@@ -1,0 +1,14 @@
+# ============================================
+# 用户自定义内核编译选项
+# 每行一个 CONFIG_xxx=y，修改后提交即可生效
+# 添加/删除/修改后，Action 会自动应用
+# ============================================
+# tmpfs 扩展属性支持（解决 KSU 模块挂载问题）
+CONFIG_TMPFS_XATTR=y
+CONFIG_TMPFS_POSIX_ACL=y
+# 文件句柄系统调用支持
+CONFIG_FHANDLE=y
+
+# fork/exec/exit 事件监控（用于用户态进程绑定 CPU）
+CONFIG_CONNECTOR=y
+CONFIG_PROC_EVENTS=y
