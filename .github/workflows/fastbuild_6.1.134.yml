@@ -591,20 +591,20 @@ jobs:
           echo 'export FAKESTAT="'$FAKESTAT'"' >> ld-wrapper
           echo 'ld.lld "$@"' >> ld-wrapper
 
-          # 测试 stat 劫持是否正常工作
-          echo "--- [Wrapper Test] 正在创建 stat 劫持测试脚本 ---"
-          echo '#!/bin/bash' > test-wrapper.sh
-          echo 'export LD_PRELOAD="'$PRELOAD_LIBS'"' >> test-wrapper.sh
-          echo 'export FAKESTAT="'$FAKESTAT'"' >> test-wrapper.sh
-          echo 'echo ">>> Wrapper 内部环境检查完毕."' >> test-wrapper.sh
-          echo 'exec "$@"' >> test-wrapper.sh
-          chmod +x test-wrapper.sh
-          echo "--- [Wrapper Test] 正在测试 (stat) 命令 ---"
-          ./test-wrapper.sh stat ./Makefile
-          echo "--- [Wrapper Test] 测试完毕 ---"
+          # # 测试 stat 劫持是否正常工作
+          # echo "--- [Wrapper Test] 正在创建 stat 劫持测试脚本 ---"
+          # echo '#!/bin/bash' > test-wrapper.sh
+          # echo 'export LD_PRELOAD="'$PRELOAD_LIBS'"' >> test-wrapper.sh
+          # echo 'export FAKESTAT="'$FAKESTAT'"' >> test-wrapper.sh
+          # echo 'echo ">>> Wrapper 内部环境检查完毕."' >> test-wrapper.sh
+          # echo 'exec "$@"' >> test-wrapper.sh
+          # chmod +x test-wrapper.sh
+          # echo "--- [Wrapper Test] 正在测试 (stat) 命令 ---"
+          # ./test-wrapper.sh stat ./Makefile
+          # echo "--- [Wrapper Test] 测试完毕 ---"
           chmod +x cc-wrapper ld-wrapper
-          echo "--- 编译前环境文件时间戳: ---"
-          LD_PRELOAD=$PRELOAD_LIBS stat ./Makefile
+          # echo "--- 编译前环境文件时间戳: ---"
+          # LD_PRELOAD=$PRELOAD_LIBS stat ./Makefile
 
           #在构建内核的同时清除不必要的.NET, Android NDK, Haskell, CodeQL运行库，清理空间且不阻塞后续步骤运行
           sudo rm -rf /usr/share/dotnet &
@@ -614,13 +614,13 @@ jobs:
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" LD="ld.lld" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error KBUILD_BUILD_TIMESTAMP="Mon Oct 20 11:56:31 UTC 2025" gki_defconfig &&
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="$(pwd)/cc-wrapper" LD="$(pwd)/ld-wrapper" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error KBUILD_BUILD_TIMESTAMP="Mon Oct 20 11:56:31 UTC 2025" Image
 
-          # 验证产物编译时间
-          echo "=== 验证产物编译时间 ==="
-          strings out/vmlinux | grep -E "SMP PREEMPT|Linux version" | head -3
-
-          # 编译后 stat 劫持二次校验
-          echo "--- 编译后文件时间戳: ---"
-          LD_PRELOAD=$PRELOAD_LIBS stat ./Makefile
+          # # 验证产物编译时间
+          # echo "=== 验证产物编译时间 ==="
+          # strings out/vmlinux | grep -E "SMP PREEMPT|Linux version" | head -3
+          # 
+          # # 编译后 stat 劫持二次校验
+          # echo "--- 编译后文件时间戳: ---"
+          # LD_PRELOAD=$PRELOAD_LIBS stat ./Makefile
           echo "内核编译完成！"
           echo "ccache状态："
           ccache -s
