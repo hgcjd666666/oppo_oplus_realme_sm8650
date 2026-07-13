@@ -64,7 +64,7 @@ on:
         description: '是否开启网络功能拓展配置(用于为ipset及需要iptables等高级网络功能内核支持的程序提供支持)'
         required: true
         type: boolean
-        default: 'false'
+        default: 'true'
       ssg_enable:
         description: '是否启用三星SSG IO调度器支持(提升IO读写性能; 在一加12上可能导致bug)'
         required: true
@@ -782,6 +782,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          wget -q https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/config.txt -O config_release.txt
+
           cat << 'EOF' > release_notes.md
           ### 📱 欧加真 ${{ env.KSU_TYPENAME }} MT6989 通用内核 | 构建信息
           - 内核版本号: ${{ env.FULL_VERSION }}
@@ -799,34 +801,25 @@ jobs:
           - Re-Kernel支持：${{ github.event.inputs.rekernel_enable }}
           - 内核级基带保护支持：${{ github.event.inputs.baseband_guard }}
 
-我用的元模块[hybrid mount](https://github.com/YuzakiKokuban/meta-hybrid_mount)
-伪装信息：
-信任根：
-VerifiedBootKey：3a0bf4b05a281b787af60bd631aba4d5c51f8a9c80746dee0d3aa1703aa43f45
-VerifiedBootHash：f646e738740a06ebea09a5afbf01757e6761d435aff73c7695bd7bafdfba5c94
-版本名称：6.1.134-android14-11-o-g42bfd68925d3
-编译时间：Mon Oct 20 11:56:31 UTC 2025
+          - 我用的元模块[hybrid mount](https://github.com/YuzakiKokuban/meta-hybrid_mount)
+          - 伪装信息：
+          - 信任根：
+          - VerifiedBootKey：3a0bf4b05a281b787af60bd631aba4d5c51f8a9c80746dee0d3aa1703aa43f45
+          - VerifiedBootHash：f646e738740a06ebea09a5afbf01757e6761d435aff73c7695bd7bafdfba5c94
+          - 版本名称：6.1.134-android14-11-o-g42bfd68925d3
+          - 编译时间：Mon Oct 20 11:56:31 UTC 2025
 
-#### ※※※刷写内核有风险，为防止出现意外导致手机变砖，在刷入内核前请务必用[KernelFlasher](https://github.com/capntrips/KernelFlasher)等软件备份boot等关键启动分区!※※※
+          - #### ※※※刷写内核有风险，为防止出现意外导致手机变砖，在刷入内核前请务必用[KernelFlasher](https://github.com/capntrips/KernelFlasher)等软件备份boot等关键启动分区!※※※
 
-### 内核配置 (config.txt)
-```
-# ============================================
-# 用户自定义内核编译选项
-# 每行一个 CONFIG_xxx=y，修改后提交即可生效
-# 添加/删除/修改后，Action 会自动应用
-# ============================================
-# tmpfs 扩展属性支持（解决 KSU 模块挂载问题）
-CONFIG_TMPFS_XATTR=y
-CONFIG_TMPFS_POSIX_ACL=y
-# 文件句柄系统调用支持
-CONFIG_FHANDLE=y
-
-# fork/exec/exit 事件监控（用于用户态进程绑定 CPU）
-CONFIG_CONNECTOR=y
-CONFIG_PROC_EVENTS=y
-```
           EOF
+
+          cat << 'EOF' >> release_notes.md
+
+          - ### 内核配置 (config.txt)
+          - ```
+          EOF
+          sed 's/^/- /' config_release.txt >> release_notes.md
+          echo '- ```' >> release_notes.md
 
           gh release create "${{ env.TAG_HEAD }}-${{ env.TIME }}" \
             --repo "${{ github.repository }}" \
