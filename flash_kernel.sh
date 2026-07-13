@@ -5,7 +5,7 @@
 #  用法: sudo sh flash_kernel.sh
 #===============================================================
 
-ZIP="/storage/emulated/0/Download/AnyKernel3_none__6.1_android14-11-o-gca13bffobf09.zip"
+ZIP="/storage/emulated/0/Download/AnyKernel3_none__6.1_android14-11-o-g42bfd68925d3.zip"
 TMPDIR="/tmp/flash_kernel"
 BOOT_IMG="$TMPDIR/boot.img"
 NEW_BOOT="$TMPDIR/new-boot.img"
