@@ -10,5 +10,8 @@ CONFIG_TMPFS_POSIX_ACL=y
 CONFIG_FHANDLE=y
 
 # fork/exec/exit 事件监控（用于用户态进程绑定 CPU）
-CONFIG_CONNECTOR=y
-CONFIG_PROC_EVENTS=y
+#CONFIG_CONNECTOR=y
+#CONFIG_PROC_EVENTS=y
+
+# 加入更详细的日志功能（我需要使用debugfs抓系统调用）
+CONFIG_FTRACE_SYSCALLS=y
